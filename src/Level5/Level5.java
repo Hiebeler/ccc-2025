@@ -2,6 +2,16 @@ package Level5;
 
 import java.util.Scanner;
 
+class Path {
+    public String primary;
+    public String secondary;
+
+    public Path(String primary, String secondary) {
+        this.primary = primary;
+        this.secondary = secondary;
+    }
+}
+
 public class Level5 {
     public static String solve(String input) {
         Scanner scanner = new Scanner(input);
@@ -15,39 +25,90 @@ public class Level5 {
         System.out.println(lines);
 
         for (int i = 0; i < lines; i++) {
+            int x = 0;
+            int y = 0;
+            String stationLine = scanner.nextLine();
+            String astroidLine = scanner.nextLine();
+            String[] splittedStation = stationLine.split(",");
+            String[] splittedAstroid = stationLine.split(",");
 
-            String line = scanner.nextLine();
-            String[] splitted = line.split(",");
 
-            Scanner linescanneX = new Scanner(splitted[0]);
-            Scanner linescanney = new Scanner(splitted[1]);
-            String stringX = test(linescanneX);
-            String stringY = test(linescanney);
+            int stationX = new Scanner(splittedStation[0]).nextInt();
+            int stationY = new Scanner(splittedStation[1]).nextInt();
 
-            output.append(stringX + "\n" + stringY + "\n" + "\n");
+
         }
 
         return String.valueOf(output);
     }
 
+    private static String iteration(int x, int y, int stationX, int stationY, int astroidX, int astroidY) {
+        int diffX = Math.abs(Math.abs(stationX) - Math.abs(x));
+        int diffY = Math.abs(Math.abs(stationY) - Math.abs(y));
+        StringBuilder outputX = new StringBuilder();
+        StringBuilder outputY = new StringBuilder();
+        if (diffX > diffY) {
+            int direction = x < stationX ? 1 : -1;
+            boolean collision = isAstroidInTheWayX(x, y, stationX, astroidX, astroidY);
+            if (collision) {
+                //check which is better, y from station
+                Path path = drive(5);
+                outputX.append(path.primary);
+                outputY.append(path.secondary);
+            }
+            Path path = drive(direction * diffX);
+            outputX.append(path.primary);
+            outputY.append(path.secondary);
+        } else {
+            int direction = y < stationX ? 1 : -1;
+            boolean collision = isAstroidInTheWayY(x, y, stationY, astroidX, astroidY);
+            if (collision) {
+                //check which is better, y from station
+                Path path = drive(5);
+                outputY.append(path.primary);
+                outputX.append(path.secondary);
+            }
+            Path path = drive(direction * diffX);
+            outputY.append(path.primary);
+            outputX.append(path.secondary);
+        }
+    }
 
-    private static String test(Scanner scanner) {
+    private static boolean isAstroidInTheWayX(int x, int y, int stationX, int astroidX, int astroidY) {
+        if (astroidY < y + 2 && astroidY > y + 2) {
+            if ((astroidX > x && astroidX < stationX) || (astroidX < x && astroidX > stationX)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-        int distance = scanner.nextInt();
+    private static boolean isAstroidInTheWayY(int x, int y, int stationY, int astroidX, int astroidY) {
+        if (astroidX < x + 2 && astroidX > x + 2) {
+            if ((astroidY > y && astroidY < stationY) || (astroidY < y && astroidY > stationY)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    private static Path drive(int distance) {
 
         int currentPace = 0;
 
         int maxCounter = 0;
 
-        StringBuilder linebuilder = new StringBuilder();
+        StringBuilder primaryBuilder = new StringBuilder();
+        StringBuilder secondaryBuilder = new StringBuilder();
 
-        linebuilder.append("0 ");
+        primaryBuilder.append("0 ");
+        secondaryBuilder.append("0 ");
 
-
-        int iterations = (int)Math.abs(Math.ceil((double)distance / 2));
+        int iterations = (int) Math.abs(Math.ceil((double) distance / 2));
 
         if (distance < 0) {
-            iterations = (int)Math.abs(Math.floor((double)distance / 2));
+            iterations = (int) Math.abs(Math.floor((double) distance / 2));
         }
 
         for (int j = 0; Math.abs(j) < iterations; j++) {
@@ -57,36 +118,35 @@ public class Level5 {
                 } else {
                     currentPace = -5;
                 }
-            }
-            else if (currentPace == 1 || currentPace == -1) {
+            } else if (currentPace == 1 || currentPace == -1) {
                 maxCounter++;
-            }
-            else if (currentPace < 0) {
+            } else if (currentPace < 0) {
                 currentPace++;
             } else {
                 currentPace--;
             }
 
-            linebuilder.append(currentPace);
-            linebuilder.append(" ");
+            secondaryBuilder.append("0 ".repeat(Math.abs(currentPace)));
+
+
+            primaryBuilder.append(currentPace);
+            primaryBuilder.append(" ");
         }
 
         int f = 0;
 
-        int iterations2 = (int)Math.abs(Math.floor((double)distance / 2));
+        int iterations2 = (int) Math.abs(Math.floor((double) distance / 2));
 
         if (distance < 0) {
-            iterations2 = (int)Math.abs(Math.ceil((double)distance / 2));
+            iterations2 = (int) Math.abs(Math.ceil((double) distance / 2));
         }
 
         for (int j = 0; j < iterations2; j++) {
             if (f == 0 && distance % 2 == 0) {
                 f = 1;
-            }
-            else if (currentPace == 5 || currentPace == -5) {
+            } else if (currentPace == 5 || currentPace == -5) {
                 currentPace = 0;
-            }
-            else if (currentPace == 1 || currentPace == -1) {
+            } else if (currentPace == 1 || currentPace == -1) {
                 if (maxCounter > 0) {
                     maxCounter--;
                 } else {
@@ -103,12 +163,17 @@ public class Level5 {
                     currentPace++;
                 }
             }
+            secondaryBuilder.append("0 ".repeat(Math.abs(currentPace)));
 
-            linebuilder.append(currentPace);
-            linebuilder.append(" ");
+            primaryBuilder.append(currentPace);
+            primaryBuilder.append(" ");
         }
 
-        linebuilder.append("0");
-        return String.valueOf(linebuilder);
-           }
+        primaryBuilder.append("0");
+        secondaryBuilder.append("0");
+        return new Path(
+                String.valueOf(primaryBuilder),
+                String.valueOf(secondaryBuilder)
+        );
+    }
 }
