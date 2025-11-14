@@ -1,4 +1,5 @@
 import Level1.Level1;
+import Level2.Level2;
 
 import java.io.*;
 
@@ -6,11 +7,10 @@ import java.io.*;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
-        String input = fileToString("src/Level1/level1_2_large.in");
-        String output = Level1.solve(input);
-        System.out.println(input);
+        String input = fileToString("src/Level2/level2_2_large.in");
+        String output = Level2.solve(input);
         System.out.println(output);
-        stringToFile(output, "src/Level1/level1_2_large.out");
+        stringToFile(output, "src/Level2/level2_2_large.out");
     }
 
     private static void stringToFile(String value, String fileName) {
