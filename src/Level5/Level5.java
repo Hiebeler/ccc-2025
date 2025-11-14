@@ -30,48 +30,60 @@ public class Level5 {
             String stationLine = scanner.nextLine();
             String astroidLine = scanner.nextLine();
             String[] splittedStation = stationLine.split(",");
-            String[] splittedAstroid = stationLine.split(",");
+            String[] splittedAstroid = astroidLine.split(",");
 
 
             int stationX = new Scanner(splittedStation[0]).nextInt();
             int stationY = new Scanner(splittedStation[1]).nextInt();
-
-
+            int astroidX = new Scanner(splittedAstroid[0]).nextInt();
+            int astroidY = new Scanner(splittedAstroid[1]).nextInt();
+            String result = iteration("", "", x, y, stationX, stationY, astroidX, astroidY);
+            output.append(result);
+            output.append("\n");
+            output.append("\n");
         }
 
         return String.valueOf(output);
     }
 
-    private static String iteration(int x, int y, int stationX, int stationY, int astroidX, int astroidY) {
+    private static String iteration(String pathX, String pathY, int x, int y, int stationX, int stationY, int astroidX, int astroidY) {
+        if (x == stationX && y == stationY) {
+            return pathX.substring(0, pathX.length() - 1)  + "\n" + pathY.substring(0, pathY.length() - 1);
+        }
         int diffX = Math.abs(Math.abs(stationX) - Math.abs(x));
         int diffY = Math.abs(Math.abs(stationY) - Math.abs(y));
-        StringBuilder outputX = new StringBuilder();
-        StringBuilder outputY = new StringBuilder();
+        StringBuilder outputX = new StringBuilder(pathX);
+        StringBuilder outputY = new StringBuilder(pathY);
         if (diffX > diffY) {
             int direction = x < stationX ? 1 : -1;
             boolean collision = isAstroidInTheWayX(x, y, stationX, astroidX, astroidY);
             if (collision) {
                 //check which is better, y from station
                 Path path = drive(5);
-                outputX.append(path.primary);
-                outputY.append(path.secondary);
+                outputY.append(path.primary);
+                outputX.append(path.secondary);
+                y += 5;
             }
             Path path = drive(direction * diffX);
             outputX.append(path.primary);
             outputY.append(path.secondary);
+            x += direction * diffX;
         } else {
-            int direction = y < stationX ? 1 : -1;
+            int direction = y < stationY ? 1 : -1;
             boolean collision = isAstroidInTheWayY(x, y, stationY, astroidX, astroidY);
             if (collision) {
                 //check which is better, y from station
                 Path path = drive(5);
-                outputY.append(path.primary);
-                outputX.append(path.secondary);
+                outputX.append(path.primary);
+                outputY.append(path.secondary);
+                x += 5;
             }
-            Path path = drive(direction * diffX);
+            Path path = drive(direction * diffY);
             outputY.append(path.primary);
             outputX.append(path.secondary);
+            y += direction * diffY;
         }
+        return iteration(String.valueOf(outputX), String.valueOf(outputY), x, y, stationX, stationY, astroidX, astroidY);
     }
 
     private static boolean isAstroidInTheWayX(int x, int y, int stationX, int astroidX, int astroidY) {
@@ -169,8 +181,8 @@ public class Level5 {
             primaryBuilder.append(" ");
         }
 
-        primaryBuilder.append("0");
-        secondaryBuilder.append("0");
+        primaryBuilder.append("0 ");
+        secondaryBuilder.append("0 ");
         return new Path(
                 String.valueOf(primaryBuilder),
                 String.valueOf(secondaryBuilder)
