@@ -30,7 +30,14 @@ public class Level3 {
 
             linebuilder.append("0 ");
 
-            for (int j = 0; Math.abs(j) < Math.abs(Math.floor((double)distance / 2)); j++) {
+
+            int iterations = (int)Math.abs(Math.ceil((double)distance / 2));
+
+            if (distance < 0) {
+                iterations = (int)Math.abs(Math.floor((double)distance / 2));
+            }
+
+            for (int j = 0; Math.abs(j) < iterations; j++) {
                 if (currentPace == 0) {
                     if (distance > 0) {
                         currentPace = 5;
@@ -51,8 +58,19 @@ public class Level3 {
                 linebuilder.append(" ");
             }
 
-            for (int j = 0; j < Math.abs(Math.floor((double)distance / 2)); j++) {
-                if (currentPace == 5 || currentPace == -5) {
+            int f = 0;
+
+            int iterations2 = (int)Math.abs(Math.floor((double)distance / 2));
+
+            if (distance < 0) {
+                iterations2 = (int)Math.abs(Math.ceil((double)distance / 2));
+            }
+
+            for (int j = 0; j < iterations2; j++) {
+                if (f == 0 && distance % 2 == 0) {
+                    f = 1;
+                }
+                else if (currentPace == 5 || currentPace == -5) {
                     currentPace = 0;
                 }
                 else if (currentPace == 1 || currentPace == -1) {
@@ -77,9 +95,7 @@ public class Level3 {
                 linebuilder.append(" ");
             }
 
-
-            //linebuilder.append(new StringBuilder(linebuilder).reverse());
-
+            linebuilder.append("0");
             output.append(linebuilder);
 
             if (i != lines-1) {

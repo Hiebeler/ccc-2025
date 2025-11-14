@@ -8,10 +8,10 @@ import java.io.*;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
-        String input = fileToString("src/Level3/level3_1_small.in");
+        String input = fileToString("src/Level3/level3_2_large.in");
         String output = Level3.solve(input);
         System.out.println(output);
-        stringToFile(output, "src/Level3/level3_1_small.out");
+        stringToFile(output, "src/Level3/level3_2_large.out");
     }
 
     private static void stringToFile(String value, String fileName) {
