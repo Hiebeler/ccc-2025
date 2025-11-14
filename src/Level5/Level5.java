@@ -50,8 +50,8 @@ public class Level5 {
         if (x == stationX && y == stationY) {
             return pathX.substring(0, pathX.length() - 1)  + "\n" + pathY.substring(0, pathY.length() - 1);
         }
-        int diffX = Math.abs(Math.abs(stationX) - Math.abs(x));
-        int diffY = Math.abs(Math.abs(stationY) - Math.abs(y));
+        int diffX = Math.abs(stationX - x);
+        int diffY = Math.abs(stationY - y);
         StringBuilder outputX = new StringBuilder(pathX);
         StringBuilder outputY = new StringBuilder(pathY);
         if (diffX > diffY) {
@@ -87,7 +87,7 @@ public class Level5 {
     }
 
     private static boolean isAstroidInTheWayX(int x, int y, int stationX, int astroidX, int astroidY) {
-        if (astroidY < y + 2 && astroidY > y + 2) {
+        if (astroidY <= y + 2 && astroidY >= y - 2) {
             if ((astroidX > x && astroidX < stationX) || (astroidX < x && astroidX > stationX)) {
                 return true;
             }
@@ -96,7 +96,7 @@ public class Level5 {
     }
 
     private static boolean isAstroidInTheWayY(int x, int y, int stationY, int astroidX, int astroidY) {
-        if (astroidX < x + 2 && astroidX > x + 2) {
+        if (astroidX <= x + 2 && astroidX >= x - 2) {
             if ((astroidY > y && astroidY < stationY) || (astroidY < y && astroidY > stationY)) {
                 return true;
             }
