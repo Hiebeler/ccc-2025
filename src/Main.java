@@ -6,16 +6,15 @@ import java.io.*;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
-        System.out.println(fileToString("input.txt"));
-
-        String output = Level1.solve();
-        stringToFile(output);
+        String input = fileToString("src/Level1/level1_1_small.in");
+        String output = Level1.solve(input);
+        stringToFile(output, "src/Level1/level1_1_small.out");
     }
 
-    private static void stringToFile(String value) {
+    private static void stringToFile(String value, String fileName) {
         try {
 
-            PrintWriter writer = new PrintWriter("output.txt", "UTF-8");
+            PrintWriter writer = new PrintWriter(fileName, "UTF-8");
             writer.println("The first line");
             writer.println("The second line");
             writer.close();
