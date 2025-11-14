@@ -17,72 +17,78 @@ public class Level4 {
         for (int i = 0; i < lines; i++) {
 
             String line = scanner.nextLine();
+            String[] splitted = line.split(",");
 
-            Scanner linescanner = new Scanner(line);
+            Scanner linescanneX = new Scanner(splitted[0]);
+            Scanner linescanney = new Scanner(splitted[1]);
+            String stringX = test(linescanneX);
+            String stringY = test(linescanney);
 
-            int distance = linescanner.nextInt();
+            output.append(stringX + "\n" + stringY + "\n" + "\n");
+        }
 
-            int currentPace = 0;
-
-            int maxCounter = 0;
-
-            StringBuilder linebuilder = new StringBuilder();
-
-            linebuilder.append("0 ");
+        return String.valueOf(output);
+    }
 
 
-            int iterations = (int)Math.abs(Math.ceil((double)distance / 2));
+    private static String test(Scanner scanner) {
 
-            if (distance < 0) {
-                iterations = (int)Math.abs(Math.floor((double)distance / 2));
-            }
+        int distance = scanner.nextInt();
 
-            for (int j = 0; Math.abs(j) < iterations; j++) {
-                if (currentPace == 0) {
-                    if (distance > 0) {
-                        currentPace = 5;
-                    } else {
-                        currentPace = -5;
-                    }
-                }
-                else if (currentPace == 1 || currentPace == -1) {
-                    maxCounter++;
-                }
-                else if (currentPace < 0) {
-                    currentPace++;
+        int currentPace = 0;
+
+        int maxCounter = 0;
+
+        StringBuilder linebuilder = new StringBuilder();
+
+        linebuilder.append("0 ");
+
+
+        int iterations = (int)Math.abs(Math.ceil((double)distance / 2));
+
+        if (distance < 0) {
+            iterations = (int)Math.abs(Math.floor((double)distance / 2));
+        }
+
+        for (int j = 0; Math.abs(j) < iterations; j++) {
+            if (currentPace == 0) {
+                if (distance > 0) {
+                    currentPace = 5;
                 } else {
-                    currentPace--;
+                    currentPace = -5;
                 }
-
-                linebuilder.append(currentPace);
-                linebuilder.append(" ");
+            }
+            else if (currentPace == 1 || currentPace == -1) {
+                maxCounter++;
+            }
+            else if (currentPace < 0) {
+                currentPace++;
+            } else {
+                currentPace--;
             }
 
-            int f = 0;
+            linebuilder.append(currentPace);
+            linebuilder.append(" ");
+        }
 
-            int iterations2 = (int)Math.abs(Math.floor((double)distance / 2));
+        int f = 0;
 
-            if (distance < 0) {
-                iterations2 = (int)Math.abs(Math.ceil((double)distance / 2));
+        int iterations2 = (int)Math.abs(Math.floor((double)distance / 2));
+
+        if (distance < 0) {
+            iterations2 = (int)Math.abs(Math.ceil((double)distance / 2));
+        }
+
+        for (int j = 0; j < iterations2; j++) {
+            if (f == 0 && distance % 2 == 0) {
+                f = 1;
             }
-
-            for (int j = 0; j < iterations2; j++) {
-                if (f == 0 && distance % 2 == 0) {
-                    f = 1;
-                }
-                else if (currentPace == 5 || currentPace == -5) {
-                    currentPace = 0;
-                }
-                else if (currentPace == 1 || currentPace == -1) {
-                    if (maxCounter > 0) {
-                        maxCounter--;
-                    } else {
-                        if (currentPace < 0) {
-                            currentPace--;
-                        } else {
-                            currentPace++;
-                        }
-                    }
+            else if (currentPace == 5 || currentPace == -5) {
+                currentPace = 0;
+            }
+            else if (currentPace == 1 || currentPace == -1) {
+                if (maxCounter > 0) {
+                    maxCounter--;
                 } else {
                     if (currentPace < 0) {
                         currentPace--;
@@ -90,20 +96,19 @@ public class Level4 {
                         currentPace++;
                     }
                 }
-
-                linebuilder.append(currentPace);
-                linebuilder.append(" ");
+            } else {
+                if (currentPace < 0) {
+                    currentPace--;
+                } else {
+                    currentPace++;
+                }
             }
 
-            linebuilder.append("0");
-            output.append(linebuilder);
-
-            if (i != lines-1) {
-                output.append("\n");
-            }
-
+            linebuilder.append(currentPace);
+            linebuilder.append(" ");
         }
 
-        return String.valueOf(output);
-    }
+        linebuilder.append("0");
+        return String.valueOf(linebuilder);
+           }
 }
