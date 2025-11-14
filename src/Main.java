@@ -6,17 +6,18 @@ import java.io.*;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
-        String input = fileToString("src/Level1/level1_1_small.in");
+        String input = fileToString("src/Level1/level1_2_large.in");
         String output = Level1.solve(input);
-        stringToFile(output, "src/Level1/level1_1_small.out");
+        System.out.println(input);
+        System.out.println(output);
+        stringToFile(output, "src/Level1/level1_2_large.out");
     }
 
     private static void stringToFile(String value, String fileName) {
         try {
 
             PrintWriter writer = new PrintWriter(fileName, "UTF-8");
-            writer.println("The first line");
-            writer.println("The second line");
+            writer.print(value);
             writer.close();
         } catch (IOException e) {
             System.out.println("Error: " + e.getMessage());
